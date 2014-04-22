@@ -53,11 +53,11 @@ static NSString *const kEscapeChars = @"`~!@#$^&*()=+[]\\{}|;':\",/<>?";
 
 #pragma mark Public methods
 
-- (id)initWithAPIKey:(NSString *)inKey sharedSecret:(NSString *)inSharedSecret
+- (id)initWithAPIKey:(NSString *)apiKey sharedSecret:(NSString *)sharedSecret
 {
     if ((self = [super init])) {
-        _key = [inKey copy];
-        _sharedSecret = [inSharedSecret copy];
+        _key = [apiKey copy];
+        _sharedSecret = [sharedSecret copy];
         _operationQueue = [[NSOperationQueue alloc] init];
     }
     return self;
@@ -74,14 +74,14 @@ static NSString *const kEscapeChars = @"`~!@#$^&*()=+[]\\{}|;':\",/<>?";
     return [NSURL URLWithString:urlString];
 }
 
-- (void)fetchRequestTokenWithCallbackURL:(NSURL *)inCallbackURL
+- (void)fetchRequestTokenWithCallbackURL:(NSURL *)callbackURL
                                  success:(void (^)(NSString *requestToken))success
                                  failure:(void (^)(NSInteger statusCode, NSError *error))failure
 {
     NSString *urlString = [NSString stringWithFormat:@"%@%@", kFlickrURLOAuth, @"request_token"];
     NSURL *requestURL = [self _oauthURLFromBaseURL:[NSURL URLWithString:urlString]
                                             method:@"GET"
-                                         arguments:@{@"oauth_callback": [inCallbackURL absoluteString]}];
+                                         arguments:@{@"oauth_callback": [callbackURL absoluteString]}];
     
     AFHTTPRequestOperation *requestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:[NSURLRequest requestWithURL:requestURL]];
     requestOperation.responseSerializer = [AFHTTPResponseSerializer serializer];

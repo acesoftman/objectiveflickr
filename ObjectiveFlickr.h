@@ -25,27 +25,25 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import "OFUtilities.h"
-
 extern NSString *const OFFlickrReadPermission;
 extern NSString *const OFFlickrWritePermission;
 extern NSString *const OFFlickrDeletePermission;
 
 @interface ObjectiveFlickr : NSObject
 
-- (id)initWithAPIKey:(NSString *)inKey sharedSecret:(NSString *)inSharedSecret;
+- (id)initWithAPIKey:(NSString *)apiKey sharedSecret:(NSString *)sharedSecret;
 
 - (NSURL *)userAuthorizationURLWithRequestToken:(NSString *)requestToken
                             requestedPermission:(NSString *)permission;
 
-- (void)fetchRequestTokenWithCallbackURL:(NSURL *)inCallbackURL
+- (void)fetchRequestTokenWithCallbackURL:(NSURL *)callbackURL
                                  success:(void (^)(NSString *requestToken))success
                                  failure:(void (^)(NSInteger statusCode, NSError *error))failure;
 
 - (void)fetchAccessTokenWithRequestToken:(NSString *)requestToken
                                 verifier:(NSString *)verifier
-                                success:(void (^)())success
-                                failure:(void (^)(NSInteger statusCode, NSError *error))failure;
+                                 success:(void (^)())success
+                                 failure:(void (^)(NSInteger statusCode, NSError *error))failure;
 
 - (void)sendWithMethod:(NSString *)method
                   path:(NSString *)path
