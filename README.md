@@ -15,13 +15,13 @@ In `YourApp-Info.plist`, make sure sure you have setup the url scheme like that:
 ```xml
 <array>
   <dict>
-		<key>CFBundleURLName</key>
-		<string></string>
-		<key>CFBundleURLSchemes</key>
-		<array>
-			<string>your_scheme</string>
-		</array>
-	</dict>
+    <key>CFBundleURLName</key>
+    <string></string>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>your_scheme</string>
+    </array>
+  </dict>
 </array>
 ```
 
