@@ -164,41 +164,6 @@ NSDictionary *OFExtractURLQueryParameter(NSString *inQuery)
     return dict;
 }
 
-BOOL OFExtractOAuthCallback(NSURL *inReceivedURL, NSURL *inBaseURL, NSString **outRequestToken, NSString **outVerifier)
-{
-    assert(outRequestToken && "outRequestToken cannot be nil");
-    assert(outVerifier && "outVerifier cannot be nil");
-    
-    NSString *ruStr = [inReceivedURL absoluteString];
-    NSString *buStr = [[inBaseURL absoluteString] stringByAppendingString:@"?"];
-    
-    if (![ruStr hasPrefix:buStr]) {
-        return NO;
-    }
-    
-    NSString *query = [ruStr substringFromIndex:[buStr length]];
-    if (![query length]) {
-        return NO;
-    }
-    
-    NSDictionary *dict = OFExtractURLQueryParameter(query);
-    if (!dict) {
-        return NO;
-    }
-    
-    NSString *t = [dict objectForKey:@"oauth_token"];
-    NSString *v = [dict objectForKey:@"oauth_verifier"];
-    
-    if (!t || !v) {
-        return NO;
-    }
-    
-    *outRequestToken = [[t copy] autorelease];
-    *outVerifier = [[v copy] autorelease];
-    return YES;
-}
-
-
 
 // From http://cocoawithlove.com/2009/06/base64-encoding-options-on-mac-and.html
 //

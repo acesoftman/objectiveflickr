@@ -1,7 +1,7 @@
 //
-// MainWindowController.h
+// OFUtilities.h
 //
-// Copyright (c) 2009 Lukhnos D. Liu (http://lukhnos.org)
+// Copyright (c) 2006-2014 Lukhnos D. Liu (http://lukhnos.org)
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -25,16 +25,12 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import <Cocoa/Cocoa.h>
-#import <WebKit/WebKit.h>
-#import <ObjectiveFlickr/ObjectiveFlickr.h>
+#import <Foundation/Foundation.h>
 
-@interface MainWindowController : NSWindowController <OFFlickrAPIRequestDelegate>
-{
-	OFFlickrAPIContext *flickrContext;
-	OFFlickrAPIRequest *flickrRequest;
-	IBOutlet NSTextView *textView;
-	IBOutlet WebView *webView;
-}
-- (IBAction)nextRandomPhotoAction:(id)sender;
-@end
+NSString *OFMD5HexStringFromNSString(NSString *inStr);
+NSString *OFEscapedURLStringFromNSString(NSString *inStr);
+NSString *OFEscapedURLStringFromNSStringWithExtraEscapedChars(NSString *inStr, NSString *inEscChars);
+NSString *OFGenerateUUIDString(void);
+NSString *OFHMACSha1Base64(NSString *inKey, NSString *inMessage);
+NSDictionary *OFExtractURLQueryParameter(NSString *inQuery);
+
