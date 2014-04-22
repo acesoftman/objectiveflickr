@@ -12,7 +12,7 @@ Getting Started
 ---------------
 
 In `YourApp-Info.plist`, make sure sure you have setup the url scheme like that:
-```
+```xml
 <array>
   <dict>
 		<key>CFBundleURLName</key>
@@ -26,7 +26,7 @@ In `YourApp-Info.plist`, make sure sure you have setup the url scheme like that:
 ```
 
 Then in `YourAppDelegate.m` you can do something like that:
-```
+```objc
 #import "ObjectiveFlickr.h"
 
 NSString * const kFlickrAPIKey = @"your_api_key";
