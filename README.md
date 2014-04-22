@@ -44,7 +44,6 @@ NSString * const kFlickrUserDefaultsOAuthTokenSecretKey = @"flickr-user-defaults
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.backgroundColor = [UIColor colorWithWhite:0.1f alpha:1.0f];
     [self.window makeKeyAndVisible];
 
     _flickr = [[ObjectiveFlickr alloc] initWithAPIKey:kFlickrAPIKey sharedSecret:kFlickrSecret];
