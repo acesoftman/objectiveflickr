@@ -95,3 +95,42 @@ NSString * const kFlickrUserDefaultsOAuthTokenSecretKey = @"flickr-user-defaults
     return NO;
 }
 ```
+
+Uploading images
+----------------
+
+Once the user is authenticated with Flickr the app can upload images by calling uploadImage or uploadImageFromUrl.
+uploadImage will upload an image from the users device, while uploadImageFromUrl will upload an image from the specified URL.
+In this case the file is first downloaded on the device.
+
+Here an example for uploadImage:
+
+```objc
+// test.jpg needs to be in the bundle
+NSString* filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"jpg"];
+
+[_flickr uploadImage:filePath
+           arguments:@{@"description": @"some description"}
+             success:^(NSDictionary *responseDictionary) {
+                 NSLog(@"response %@", responseDictionary);
+             }
+             failure:^(NSInteger statusCode, NSError *error) {
+                 // do something else
+                 NSLog(@"error: %@", error);
+             }];
+
+```
+
+and for uploadImageFromUrl:
+
+```objc
+[_flickr uploadImageFromUrl:@"http://1.bp.blogspot.com/-6jAXe8SUPPY/T-T2wiyQYRI/AAAAAAAAAV8/ckQc_qsanL4/s1600/03-turing-miscellany-09.jpg"
+                 arguments:@{@"description": @"some description"}
+                   success:^(NSDictionary *responseDictionary) {
+                       NSLog(@"response %@", responseDictionary);
+                   }
+                   failure:^(NSInteger statusCode, NSError *error) {
+                       // do something else
+                       NSLog(@"error: %@", error);
+                   }];
+```

@@ -215,6 +215,7 @@ static NSString *const kEscapeChars = @"`~!@#$^&*()=+[]\\{}|;':\",/<>?";
     AFHTTPRequestOperation *op = [manager GET:photoUrl
                                    parameters:nil
                                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                          // todo: remove the temporary file
                                           if(operation.response.statusCode == 200) {
                                               [self uploadImage:path
                                                       arguments:parameters
@@ -222,6 +223,7 @@ static NSString *const kEscapeChars = @"`~!@#$^&*()=+[]\\{}|;':\",/<>?";
                                                         failure:failure];
                                           }
                                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                          // todo: remove the temporary file
                                           NSLog(@"Error: %@", error);
                                       }];
     op.outputStream = [NSOutputStream outputStreamToFileAtPath:path append:NO];
