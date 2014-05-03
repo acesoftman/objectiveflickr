@@ -37,6 +37,7 @@ NSString *const OFFlickrDeletePermission = @"delete";
 // urls
 static NSString *const kFlickrURLOAuth = @"https://www.flickr.com/services/oauth/";
 static NSString *const kFlickrURLAPI = @"https://api.flickr.com/services/rest/";
+static NSString *const kFlickrURLUpload = @"https://up.flickr.com/services/upload/";
 
 // utils
 static NSString *const kEscapeChars = @"`~!@#$^&*()=+[]\\{}|;':\",/<>?";
@@ -163,6 +164,69 @@ static NSString *const kEscapeChars = @"`~!@#$^&*()=+[]\\{}|;':\",/<>?";
         }
     }];
     [_operationQueue addOperation:requestOperation];
+}
+
+- (void)uploadImage:(NSString *)photoPath
+                arguments:(NSDictionary *)parameters
+                  success:(void (^)(NSDictionary *responseDictionary))success
+                  failure:(void (^)(NSInteger statusCode, NSError *error))failure
+{
+    NSDictionary *newArgs = [self _signedOAuthHTTPQueryArguments:parameters baseURL:[NSURL URLWithString:kFlickrURLUpload] method:@"POST"];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+
+    AFHTTPRequestOperation *requestOperation =
+     [manager POST:kFlickrURLUpload parameters:newArgs constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+         NSURL *url = [NSURL fileURLWithPath:photoPath];
+         NSError *error;
+
+        // append data
+        [formData appendPartWithFileURL:url name:@"photo" error:&error];
+        
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"Success: %@ ***** %@", operation.responseString, responseObject);
+        
+        if (success) {
+            success((NSDictionary *)responseObject);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@ ***** %@", operation.responseString, error);
+        
+        if (failure) {
+            failure(operation.response.statusCode, error);
+        }
+    }];
+
+    [requestOperation start];
+}
+
+- (void)uploadImageFromUrl:(NSString *)photoUrl
+                 arguments:(NSDictionary *)parameters
+                   success:(void (^)(NSDictionary *responseDictionary))success
+                   failure:(void (^)(NSInteger statusCode, NSError *error))failure
+{
+    NSURL *url = [NSURL URLWithString:photoUrl];
+    
+    NSString *path = [NSTemporaryDirectory() stringByAppendingFormat:@"%@.%@.jpg", @"somefile", OFGenerateUUIDString()];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    AFHTTPRequestOperation *op = [manager GET:photoUrl
+                                   parameters:nil
+                                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                          if(operation.response.statusCode == 200) {
+                                              [self uploadImage:path
+                                                      arguments:parameters
+                                                        success:success
+                                                        failure:failure];
+                                          }
+                                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                          NSLog(@"Error: %@", error);
+                                      }];
+    op.outputStream = [NSOutputStream outputStreamToFileAtPath:path append:NO];
+    
+    [op start];
 }
 
 #pragma mark Private methods

@@ -51,6 +51,16 @@ extern NSString *const OFFlickrDeletePermission;
                success:(void (^)(NSDictionary *responseDictionary))success
                failure:(void (^)(NSInteger statusCode, NSError *error))failure;
 
+- (void)uploadImage:(NSString *)photoUrl
+                arguments:(NSDictionary *)parameters
+                  success:(void (^)(NSDictionary *responseDictionary))success
+                  failure:(void (^)(NSInteger statusCode, NSError *error))failure;
+
+- (void)uploadImageFromUrl:(NSString *)photoUrl
+          arguments:(NSDictionary *)parameters
+            success:(void (^)(NSDictionary *responseDictionary))success
+            failure:(void (^)(NSInteger statusCode, NSError *error))failure;
+
 @property(nonatomic, readonly) NSString *key;
 @property(nonatomic, readonly) NSString *sharedSecret;
 @property(nonatomic, strong) NSString *oauthToken;
