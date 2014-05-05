@@ -50,7 +50,7 @@ NSString * const kFlickrUserDefaultsOAuthTokenSecretKey = @"flickr-user-defaults
     _flickr.oauthToken = [[NSUserDefaults standardUserDefaults] objectForKey:kFlickrUserDefaultsOAuthTokenKey];
     _flickr.oauthTokenSecret = [[NSUserDefaults standardUserDefaults] objectForKey:kFlickrUserDefaultsOAuthTokenSecretKey];
     
-    if (_flickr.oauthToken.length > 0 && _flickr.oauthTokenSecret.length > 0) {
+    if (_flickr.oauthToken.length == 0 && _flickr.oauthTokenSecret.length == 0) {
         [_flickr fetchRequestTokenWithCallbackURL:[NSURL URLWithString:kFlickrCallbackURL] success:^(NSString *requestToken) {
             NSURL *userAuthorizationURL = [_flickr userAuthorizationURLWithRequestToken:requestToken requestedPermission:OFFlickrReadPermission];
             [[UIApplication sharedApplication] openURL:userAuthorizationURL];
